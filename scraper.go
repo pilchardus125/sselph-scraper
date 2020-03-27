@@ -61,6 +61,7 @@ var consoleSrcs = flag.String("console_src", "gdb", "Comma-separated order to pr
 var stripUnicode = flag.Bool("strip_unicode", false, "If true, remove all non-ascii characters.")
 var downloadImages = flag.Bool("download_images", true, "If false, don't download any images, instead see if the expected file is stored locally already.")
 var downloadVideos = flag.Bool("download_videos", false, "If true, download videos.")
+var normalizedVideos = flag.Bool("normalized_videos", false, "If true, download normalized videos, requires download_videos")
 var convertVideos = flag.Bool("convert_videos", false, "If true, convert videos for the Raspberry Pi (e.g. 320x240@30fps) NOTE: This needs ffmpeg installed")
 var downloadMarquees = flag.Bool("download_marquees", false, "If true, download marquees.")
 var scrapeAll = flag.Bool("scrape_all", false, "If true, scrape all systems listed in es_systems.cfg. All dir/path flags will be ignored.")
@@ -663,15 +664,16 @@ func main() {
 		case "ss":
 			t := ss.Threads(ctx, dev, ss.UserInfo{*ssUser, *ssPassword})
 			ssDS := &ds.SS{
-				HM:     hm,
-				Hasher: hasher,
-				Dev:    dev,
-				User:   ss.UserInfo{*ssUser, *ssPassword},
-				Width:  int(*maxWidth),
-				Height: int(*maxHeight),
-				Region: ssRegions,
-				Lang:   ssLangs,
-				Limit:  make(chan struct{}, t),
+				HM:               hm,
+				Hasher:           hasher,
+				Dev:              dev,
+				User:             ss.UserInfo{*ssUser, *ssPassword},
+				Width:            int(*maxWidth),
+				Height:           int(*maxHeight),
+				Region:           ssRegions,
+				Lang:             ssLangs,
+				Limit:            make(chan struct{}, t),
+				NormalizedVideos: *normalizedVideos,
 			}
 			consoleSources = append(consoleSources, ssDS)
 		case "ovgdb":
@@ -693,13 +695,14 @@ func main() {
 		case "ss":
 			t := ss.Threads(ctx, dev, ss.UserInfo{*ssUser, *ssPassword})
 			ssMDS := &ds.SSMAME{
-				Dev:    dev,
-				User:   ss.UserInfo{*ssUser, *ssPassword},
-				Width:  int(*maxWidth),
-				Height: int(*maxHeight),
-				Region: ssRegions,
-				Lang:   ssLangs,
-				Limit:  make(chan struct{}, t),
+				Dev:              dev,
+				User:             ss.UserInfo{*ssUser, *ssPassword},
+				Width:            int(*maxWidth),
+				Height:           int(*maxHeight),
+				Region:           ssRegions,
+				Lang:             ssLangs,
+				Limit:            make(chan struct{}, t),
+				NormalizedVideos: *normalizedVideos,
 			}
 			arcadeSources = append(arcadeSources, ssMDS)
 		case "mamedb":
