@@ -20,7 +20,7 @@ github.com/kjk/lzmadec
 # github.com/mattn/go-sqlite3 v1.2.1-0.20170407154627-cf7286f069c3
 ## explicit
 github.com/mattn/go-sqlite3
-# github.com/mitchellh/go-homedir v0.0.0-20161203194507-b8bc1bf76747
+# github.com/mitchellh/go-homedir v1.1.0
 ## explicit
 github.com/mitchellh/go-homedir
 # github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
