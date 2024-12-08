@@ -10,17 +10,14 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.24
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
-	github.com/syndtr/goleveldb v0.0.0-20170409015612-8c81ea47d4c4
+	github.com/syndtr/goleveldb v1.0.0
 )
 
 require (
 	github.com/golang/protobuf v1.2.0 // indirect
-	github.com/golang/snappy v0.0.0-20170215233205-553a64147049 // indirect
-	github.com/onsi/ginkgo v1.3.2-0.20170425232345-83438ca4278f // indirect
-	github.com/onsi/gomega v1.1.1-0.20170430162437-da367351331c // indirect
+	github.com/golang/snappy v0.0.0-20180518054509-2e65f85255db // indirect
 	golang.org/x/net v0.0.0-20190108225652-1e06a53dbb7e // indirect
 	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45 // indirect
-	golang.org/x/sys v0.0.0-20170427041856-9ccfe848b9db // indirect
 	google.golang.org/appengine v1.4.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

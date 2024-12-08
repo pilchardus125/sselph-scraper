@@ -7,7 +7,7 @@ github.com/antihax/optional
 # github.com/golang/protobuf v1.2.0
 ## explicit
 github.com/golang/protobuf/proto
-# github.com/golang/snappy v0.0.0-20170215233205-553a64147049
+# github.com/golang/snappy v0.0.0-20180518054509-2e65f85255db
 ## explicit
 github.com/golang/snappy
 # github.com/hashicorp/golang-lru v1.0.2
@@ -26,11 +26,7 @@ github.com/mitchellh/go-homedir
 # github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
 ## explicit
 github.com/nfnt/resize
-# github.com/onsi/ginkgo v1.3.2-0.20170425232345-83438ca4278f
-## explicit
-# github.com/onsi/gomega v1.1.1-0.20170430162437-da367351331c
-## explicit
-# github.com/syndtr/goleveldb v0.0.0-20170409015612-8c81ea47d4c4
+# github.com/syndtr/goleveldb v1.0.0
 ## explicit
 github.com/syndtr/goleveldb/leveldb
 github.com/syndtr/goleveldb/leveldb/cache
@@ -52,8 +48,6 @@ golang.org/x/net/context/ctxhttp
 ## explicit; go 1.11
 golang.org/x/oauth2
 golang.org/x/oauth2/internal
-# golang.org/x/sys v0.0.0-20170427041856-9ccfe848b9db
-## explicit
 # google.golang.org/appengine v1.4.0
 ## explicit
 google.golang.org/appengine/internal
