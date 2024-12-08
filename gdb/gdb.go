@@ -8,8 +8,6 @@ import (
 	"strconv"
 	"sync"
 
-	"github.com/antihax/optional"
-
 	gamesdb "github.com/J-Swift/thegamesdb-swagger-client-go"
 )
 
@@ -25,7 +23,10 @@ type publishers struct {
 var publishersCache = publishers{}
 
 func getPublishers(ctx context.Context, apikey string) map[string]gamesdb.Publisher {
-	pubs, resp, err := apiClient.PublishersApi.Publishers(ctx, apikey)
+	pubs, resp, err := apiClient.PublishersApi.PublishersExecute(
+		apiClient.PublishersApi.Publishers(ctx).
+			Apikey(apikey),
+	)
 
 	if err != nil || resp.StatusCode != 200 {
 		return make(map[string]gamesdb.Publisher)
@@ -63,8 +64,10 @@ type developers struct {
 var developersCache = developers{}
 
 func getDevelopers(ctx context.Context, apikey string) map[string]gamesdb.Developer {
-	pubs, resp, err := apiClient.DevelopersApi.Developers(ctx, apikey)
-
+	pubs, resp, err := apiClient.DevelopersApi.DevelopersExecute(
+		apiClient.DevelopersApi.Developers(ctx).
+			Apikey(apikey),
+	)
 	if err != nil || resp.StatusCode != 200 {
 		return make(map[string]gamesdb.Developer)
 	}
@@ -101,7 +104,10 @@ type genres struct {
 var genresCache = genres{}
 
 func getGenres(ctx context.Context, apikey string) map[string]gamesdb.Genre {
-	pubs, resp, err := apiClient.GenresApi.Genres(ctx, apikey)
+	pubs, resp, err := apiClient.GenresApi.GenresExecute(
+		apiClient.GenresApi.Genres(ctx).
+			Apikey(apikey),
+	)
 
 	if err != nil || resp.StatusCode != 200 {
 		return make(map[string]gamesdb.Genre)
@@ -178,10 +184,10 @@ type ParsedGameImage struct {
 
 func toParsedGameImage(apiGameImage gamesdb.GameImage) ParsedGameImage {
 	return ParsedGameImage{
-		ID:       int(apiGameImage.Id),
-		Type:     apiGameImage.Type,
-		Side:     apiGameImage.Side,
-		Filename: apiGameImage.Filename,
+		ID:       int(apiGameImage.GetId()),
+		Type:     apiGameImage.GetType(),
+		Side:     apiGameImage.GetSide(),
+		Filename: apiGameImage.GetFilename(),
 	}
 }
 
@@ -216,7 +222,6 @@ type ParsedGame struct {
 
 // GetGame gets the game information from the DB.
 func GetGame(ctx context.Context, apikey string, gameID string) (*ParsedGame, error) {
-	var games gamesdb.GamesByGameId
 	var resp *http.Response
 	var err error
 
@@ -227,8 +232,12 @@ func GetGame(ctx context.Context, apikey string, gameID string) (*ParsedGame, er
 	if gameID == "" {
 		return nil, fmt.Errorf("must provide an ID or Name")
 	}
-
-	games, resp, err = apiClient.GamesApi.GamesByGameID(ctx, apikey, gameID, &gamesdb.GamesByGameIDOpts{Fields: optional.NewString(fields)})
+	games, resp, err := apiClient.GamesApi.GamesByGameIDExecute(
+		apiClient.GamesApi.GamesByGameID(ctx).
+			Apikey(apikey).
+			Id(gameID).
+			Fields(fields),
+	)
 
 	if err != nil {
 		return nil, fmt.Errorf("getting game url:%s, error:%s", resp.Request.URL, err)
@@ -240,11 +249,11 @@ func GetGame(ctx context.Context, apikey string, gameID string) (*ParsedGame, er
 
 	apiGame := games.Data.Games[0]
 	res := &ParsedGame{
-		ID:          int(apiGame.Id),
-		Name:        apiGame.GameTitle,
-		ReleaseDate: apiGame.ReleaseDate,
-		Players:     int(apiGame.Players),
-		Overview:    apiGame.Overview,
+		ID:          int(apiGame.GetId()),
+		Name:        apiGame.GetGameTitle(),
+		ReleaseDate: apiGame.GetReleaseDate(),
+		Players:     int(apiGame.GetPlayers()),
+		Overview:    apiGame.GetOverview(),
 	}
 
 	allGenres := getCachedGenres(ctx, apikey)
@@ -274,7 +283,11 @@ func GetGame(ctx context.Context, apikey string, gameID string) (*ParsedGame, er
 	}
 	res.Publishers = publishers
 
-	images, _, err := apiClient.GamesApi.GamesImages(ctx, apikey, strconv.Itoa(res.ID), nil)
+	images, _, err := apiClient.GamesApi.GamesImagesExecute(
+		apiClient.GamesApi.GamesImages(ctx).
+			Apikey(apikey).
+			GamesId(strconv.Itoa(res.ID)),
+	)
 	if err == nil {
 		res.ImageBaseUrls = toParsedImageSizeBaseUrls(images.Data.BaseUrl)
 
@@ -294,7 +307,11 @@ func GetGame(ctx context.Context, apikey string, gameID string) (*ParsedGame, er
 
 // IsUp returns if thegamedb.net is up.
 func IsUp(ctx context.Context, apikey string) bool {
-	_, resp, err := apiClient.GamesApi.GamesByGameID(ctx, apikey, "1", nil)
+	_, resp, err := apiClient.GamesApi.GamesByGameIDExecute(
+		apiClient.GamesApi.GamesByGameID(ctx).
+			Apikey(apikey).
+			Id("1"),
+	)
 	if err != nil || resp.StatusCode != 200 {
 		return false
 	}
