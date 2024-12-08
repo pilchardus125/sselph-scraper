@@ -11,8 +11,8 @@ github.com/hashicorp/golang-lru v1.0.2 h1:dV3g9Z/unq5DpblPpw+Oqcv4dU/1omnb4Ok8iP
 github.com/hashicorp/golang-lru v1.0.2/go.mod h1:iADmTwqILo4mZ8BN3D2Q6+9jd8WM5uGBxy+E8yxSoD4=
 github.com/kjk/lzmadec v0.0.0-20210713164611-19ac3ee91a71 h1:TYp9Fj0apeZMWentXRaFM6B0ixdFefrlgY8n8XYEz1s=
 github.com/kjk/lzmadec v0.0.0-20210713164611-19ac3ee91a71/go.mod h1:2zRkQCuw/eK6cqkYAeNqyBU7JKa2Gcq40BZ9GSJbmfE=
-github.com/mattn/go-sqlite3 v1.2.1-0.20170407154627-cf7286f069c3 h1:e5KQ62MmaYQ0RqL4So5ssEDgNuVoXed4lfuhLBxsVWI=
-github.com/mattn/go-sqlite3 v1.2.1-0.20170407154627-cf7286f069c3/go.mod h1:FPy6KqzDD04eiIsT53CuJW3U88zkxoIYsOqkbpncsNc=
+github.com/mattn/go-sqlite3 v1.14.24 h1:tpSp2G2KyMnnQu99ngJ47EIkWVmliIizyZBfPrBWDRM=
+github.com/mattn/go-sqlite3 v1.14.24/go.mod h1:Uh1q+B4BYcTPb+yiD3kU8Ct7aC0hY9fxUwlHK0RXw+Y=
 github.com/mitchellh/go-homedir v1.1.0 h1:lukF9ziXFxDFPkA1vsr5zpc1XuPDn/wFntq5mG+4E0Y=
 github.com/mitchellh/go-homedir v1.1.0/go.mod h1:SfyaCUpYCn1Vlf4IUYiD9fPX4A5wJrkLzIz1N1q0pr0=
 github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646 h1:zYyBkD/k9seD2A7fsi6Oo2LfFZAehjjQMERAvZLEDnQ=

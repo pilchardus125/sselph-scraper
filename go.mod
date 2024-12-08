@@ -7,7 +7,7 @@ require (
 	github.com/antihax/optional v1.0.0
 	github.com/hashicorp/golang-lru v1.0.2
 	github.com/kjk/lzmadec v0.0.0-20210713164611-19ac3ee91a71
-	github.com/mattn/go-sqlite3 v1.2.1-0.20170407154627-cf7286f069c3
+	github.com/mattn/go-sqlite3 v1.14.24
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
 	github.com/syndtr/goleveldb v0.0.0-20170409015612-8c81ea47d4c4
