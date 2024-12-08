@@ -23,7 +23,7 @@ github.com/mattn/go-sqlite3
 # github.com/mitchellh/go-homedir v0.0.0-20161203194507-b8bc1bf76747
 ## explicit
 github.com/mitchellh/go-homedir
-# github.com/nfnt/resize v0.0.0-20160724205520-891127d8d1b5
+# github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
 ## explicit
 github.com/nfnt/resize
 # github.com/onsi/ginkgo v1.3.2-0.20170425232345-83438ca4278f
