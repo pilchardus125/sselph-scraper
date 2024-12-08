@@ -11,13 +11,14 @@ import (
 
 // SSMAME is the source for ScreenScraper
 type SSMAME struct {
-	Dev    ss.DevInfo
-	User   ss.UserInfo
-	Lang   []string
-	Region []string
-	Width  int
-	Height int
-	Limit  chan struct{}
+	Dev              ss.DevInfo
+	User             ss.UserInfo
+	Lang             []string
+	Region           []string
+	Width            int
+	Height           int
+	Limit            chan struct{}
+	NormalizedVideos bool
 }
 
 // GetName implements DS
@@ -59,7 +60,11 @@ func (s *SSMAME) GetGame(ctx context.Context, path string) (*Game, error) {
 	addImageToMameGame(ret, game, ss.Box2D, ImgBoxart, regions, s)
 	addImageToMameGame(ret, game, ss.Box3D, ImgBoxart3D, regions, s)
 	addImageToMameGame(ret, game, ss.Flyer, ImgFlyer, regions, s)
-	if vidURL, format, ok := game.MediaWithFormat(ss.Video, regions); ok {
+	videoMediaType := ss.Video
+	if s.NormalizedVideos {
+		videoMediaType = ss.VideoNormalized
+	}
+	if vidURL, format, ok := game.MediaWithFormat(videoMediaType, regions); ok {
 		ret.Videos[VidStandard] = HTTPVideoSS{vidURL, "." + format, s.Limit}
 	}
 	ret.ID = game.ID

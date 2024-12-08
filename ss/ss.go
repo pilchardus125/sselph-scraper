@@ -17,16 +17,17 @@ import (
 type MediaType string
 
 const (
-	Screenshot    MediaType = "ss"
-	ScreenMarquee MediaType = "screenmarquee"
-	Marquee       MediaType = "marquee"
-	Video         MediaType = "video"
-	Box2D         MediaType = "box-2D"
-	Box3D         MediaType = "box-3D"
-	Flyer         MediaType = "flyer"
-	Wheel         MediaType = "wheel"
-	Support2D     MediaType = "support-2D"
-	SupportLabel  MediaType = "support-texture"
+	Screenshot      MediaType = "ss"
+	ScreenMarquee   MediaType = "screenmarquee"
+	Marquee         MediaType = "marquee"
+	Video           MediaType = "video"
+	VideoNormalized MediaType = "video-normalized"
+	Box2D           MediaType = "box-2D"
+	Box3D           MediaType = "box-3D"
+	Flyer           MediaType = "flyer"
+	Wheel           MediaType = "wheel"
+	Support2D       MediaType = "support-2D"
+	SupportLabel    MediaType = "support-texture"
 )
 
 const (

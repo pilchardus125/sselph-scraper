@@ -31,15 +31,16 @@ func ssXMLDate(d string) string {
 
 // SS is the source for ScreenScraper
 type SS struct {
-	HM     *HashMap
-	Hasher *Hasher
-	Dev    ss.DevInfo
-	User   ss.UserInfo
-	Lang   []string
-	Region []string
-	Width  int
-	Height int
-	Limit  chan struct{}
+	HM               *HashMap
+	Hasher           *Hasher
+	Dev              ss.DevInfo
+	User             ss.UserInfo
+	Lang             []string
+	Region           []string
+	Width            int
+	Height           int
+	Limit            chan struct{}
+	NormalizedVideos bool
 }
 
 type HTTPVideoSS struct {
@@ -236,7 +237,11 @@ func (s *SS) GetGame(ctx context.Context, path string) (*Game, error) {
 	wheel = addImageToGame(ret, game, ss.Wheel, ImgMarquee, regions, s)
 	cart = addImageToGame(ret, game, ss.Support2D, ImgCart, regions, s)
 	addImageToGame(ret, game, ss.SupportLabel, ImgCartLabel, regions, s)
-	if vidURL, format, ok := game.MediaWithFormat(ss.Video, regions); ok {
+	videoMediaType := ss.Video
+	if s.NormalizedVideos {
+		videoMediaType = ss.VideoNormalized
+	}
+	if vidURL, format, ok := game.MediaWithFormat(videoMediaType, regions); ok {
 		ret.Videos[VidStandard] = HTTPVideoSS{vidURL, "." + format, s.Limit}
 	}
 	ret.Images[ImgMix3] = MixImage{StandardThree(screen, box, wheel)}
