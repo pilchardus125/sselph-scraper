@@ -6,7 +6,7 @@ require (
 	github.com/J-Swift/thegamesdb-swagger-client-go v0.0.0-20200109031333-43ed8a0b364e
 	github.com/antihax/optional v1.0.0
 	github.com/hashicorp/golang-lru v1.0.2
-	github.com/kjk/lzmadec v0.0.0-20170315162202-d63e2dec0785
+	github.com/kjk/lzmadec v0.0.0-20210713164611-19ac3ee91a71
 	github.com/mattn/go-sqlite3 v1.2.1-0.20170407154627-cf7286f069c3
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646

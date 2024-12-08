@@ -14,7 +14,7 @@ github.com/golang/snappy
 ## explicit; go 1.12
 github.com/hashicorp/golang-lru
 github.com/hashicorp/golang-lru/simplelru
-# github.com/kjk/lzmadec v0.0.0-20170315162202-d63e2dec0785
+# github.com/kjk/lzmadec v0.0.0-20210713164611-19ac3ee91a71
 ## explicit
 github.com/kjk/lzmadec
 # github.com/mattn/go-sqlite3 v1.2.1-0.20170407154627-cf7286f069c3

@@ -33,8 +33,9 @@ var (
 
 // Archive describes a single .7z archive
 type Archive struct {
-	Path    string
-	Entries []Entry
+	Path     string
+	Entries  []Entry
+	password *string
 }
 
 // Entry describes a single file inside .7z archive
@@ -108,10 +109,8 @@ func getEntryLines(scanner *bufio.Scanner) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	if len(res) == 9 || len(res) == 0 {
-		return res, nil
-	}
-	return nil, errUnexpectedLines
+
+	return res, nil
 }
 
 func parseEntryLines(lines []string) (Entry, error) {
@@ -149,8 +148,6 @@ func parseEntryLines(lines []string) (Entry, error) {
 			e.Method = v
 		case "block":
 			e.Block, err = strconv.Atoi(v)
-		default:
-			err = fmt.Errorf("unexpected entry line '%s'", name)
 		}
 		if err != nil {
 			return e, err
@@ -185,14 +182,37 @@ func parse7zListOutput(d []byte) ([]Entry, error) {
 	return res, nil
 }
 
-// NewArchive uses 7z to extract a list of files in .7z archive
 func NewArchive(path string) (*Archive, error) {
+	return newArchive(path, nil)
+}
+
+func NewEncryptedArchive(path string, password string) (*Archive, error) {
+	return newArchive(path, &password)
+}
+
+// NewArchive uses 7z to extract a list of files in .7z archive
+func newArchive(path string, password *string) (*Archive, error) {
 	err := detect7zCached()
 	if err != nil {
 		return nil, err
 	}
-	cmd := exec.Command("7z", "l", "-slt", "-sccUTF-8", path)
-	out, err := cmd.CombinedOutput()
+
+	params := []string{"l", "-slt", "-sccUTF-8"}
+	var tmpPassword string
+	if password == nil || *password == "" {
+		// 7z interactively asks for a password when an archive is encrypted
+		// and no password has been supplied. But it has no problems when
+		// a password has been supplied and the archive is not encrypted.
+		// So if no password has been provided, use a non-sensical one to
+		// prevent 7z from blocking on encrypted archives and instead fail
+		tmpPassword = "                  "
+	} else {
+		tmpPassword = *password
+	}
+	params = append(params, fmt.Sprintf("-p%s", tmpPassword))
+	params = append(params, path)
+	cmd := exec.Command("7z", params...)
+	out, err := cmd.Output()
 	if err != nil {
 		return nil, err
 	}
@@ -201,8 +221,9 @@ func NewArchive(path string) (*Archive, error) {
 		return nil, err
 	}
 	return &Archive{
-		Path:    path,
-		Entries: entries,
+		Path:     path,
+		Entries:  entries,
+		password: &tmpPassword,
 	}, nil
 }
 
@@ -216,9 +237,9 @@ func (rc *readCloser) Read(p []byte) (int, error) {
 }
 
 func (rc *readCloser) Close() error {
-	// if we want to finish before reading all the data, we need to close
-	// it all the data has already been read, or else rc.cmd.Wait() will hang
-	// if it's already closed then Close() will return 'invalid argument',
+	// if we want to finish before reading all the data, we need to Close()
+	// stdout pipe, or else rc.cmd.Wait() will hang.
+	// if it's already closed then Close() returns 'invalid argument',
 	// which we can ignore
 	rc.rc.Close()
 	return rc.cmd.Wait()
@@ -236,8 +257,19 @@ func (a *Archive) GetFileReader(name string) (io.ReadCloser, error) {
 	if !found {
 		return nil, errors.New("file not in the archive")
 	}
-	cmd := exec.Command("7z", "x", "-so", a.Path, name)
+
+	params := []string{"x", "-so"}
+	if a.password != nil {
+		params = append(params, fmt.Sprintf("-p%s", *a.password))
+	}
+	params = append(params, a.Path, name)
+
+	cmd := exec.Command("7z", params...)
 	stdout, err := cmd.StdoutPipe()
+	if err != nil {
+		return nil, err
+	}
+
 	rc := &readCloser{
 		rc:  stdout,
 		cmd: cmd,
